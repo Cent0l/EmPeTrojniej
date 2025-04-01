@@ -7,11 +7,23 @@
   <title>EmPeTrójniej</title>
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+    button.active-sound {
+      background-color: #005555 !important;
+      color: white;
+    }
+    .remove-button {
+      background-color: #ff4444;
+      color: white;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-right: 6px;
+      padding: 0.3rem 0.6rem;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    EmPeTrójniej
-  </header>
+  <header>EmPeTrójniej</header>
 
   <main>
     <section id="players">
@@ -30,10 +42,10 @@
         <audio id="audio-player" controls></audio>
         <br><br>
         <div id="quick-buttons">
-          <button-correct onclick="playQuickSound('sounds/correct.mp3')">Correct</button-correct>
-          <button-wrong onclick="playQuickSound('sounds/wrong.mp3')">Wrong</button-wrong>
-          <button-yay onclick="playQuickSound('sounds/yay.mp3')">Yay</button-yay>
-          <button-applouse onclick="playQuickSound('sounds/applause.mp3')">Brawa</button-applouse>
+          <button onclick="playQuickSound('sounds/correct.mp3', this)">Correct</button>
+          <button onclick="playQuickSound('sounds/wrong.mp3', this)">Wrong</button>
+          <button onclick="playQuickSound('sounds/yay.mp3', this)">Yay</button>
+          <button onclick="playQuickSound('sounds/applause.mp3', this)">Brawa</button>
         </div>
         <div class="lifeline-description">
           <p><strong>KOŁA RATUNKOWE</strong></p>
@@ -47,9 +59,7 @@
     </section>
   </main>
 
-  <footer>
-    Teleturniej Toczkensa. Created by SiemkaMati
-  </footer>
+  <footer>Teleturniej Toczkensa. Created by SiemkaMati</footer>
 
   <script>
     const playerList = document.getElementById("player-list");
@@ -59,8 +69,22 @@
     const playSoundButton = document.getElementById("play-sound");
     const audioPlayer = document.getElementById("audio-player");
 
-    let players = JSON.parse(localStorage.getItem("players")) || [];
+    let players = [];
     let avatars = [];
+    let activeSounds = [];
+
+    function loadStorage() {
+      players = JSON.parse(localStorage.getItem("players")) || [];
+      activeSounds = JSON.parse(localStorage.getItem("activeSounds")) || [];
+    }
+
+    function savePlayers() {
+      localStorage.setItem("players", JSON.stringify(players));
+    }
+
+    function saveActiveSounds() {
+      localStorage.setItem("activeSounds", JSON.stringify(activeSounds));
+    }
 
     fetch("avatars.json")
       .then(response => response.json())
@@ -183,12 +207,22 @@
       }
     }
 
-    function savePlayers() {
-      localStorage.setItem("players", JSON.stringify(players));
-    }
+    function playQuickSound(soundPath, button) {
+      const index = activeSounds.indexOf(soundPath);
 
-    function loadPlayers() {
-      players.forEach(renderPlayer);
+      if (index > -1) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        activeSounds.splice(index, 1);
+        button.classList.remove("active-sound");
+      } else {
+        audioPlayer.src = soundPath;
+        audioPlayer.play();
+        activeSounds.push(soundPath);
+        button.classList.add("active-sound");
+      }
+
+      saveActiveSounds();
     }
 
     fetch("sounds.json")
@@ -212,9 +246,13 @@
             const td = document.createElement("td");
             if (soundGroups[group][row]) {
               const file = soundGroups[group][row];
+              const soundPath = `sounds/${file}`;
               const button = document.createElement("button");
               button.textContent = file.replace(/^\d+_/, "").replace(".mp3", "").replace(/_/g, " ");
-              button.onclick = () => playQuickSound(`sounds/${file}`);
+              button.onclick = () => playQuickSound(soundPath, button);
+              if (activeSounds.includes(soundPath)) {
+                button.classList.add("active-sound");
+              }
               td.appendChild(button);
             }
             tr.appendChild(td);
@@ -236,13 +274,12 @@
       audioPlayer.play();
     });
 
-    function playQuickSound(soundPath) {
-      audioPlayer.src = soundPath;
-      audioPlayer.play();
-    }
-
     addPlayerButton.addEventListener("click", () => addPlayer());
-    loadPlayers();
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadStorage();
+      players.forEach(renderPlayer);
+    });
   </script>
 </body>
 </html>
