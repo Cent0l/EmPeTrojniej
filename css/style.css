@@ -112,12 +112,25 @@ button-correct, button-wrong, button-yay, button-applouse {
   text-align: center;
   margin: 0.3rem 0.4rem;
   min-width: 90px;
+  
 }
 
 button-correct { background: #28a745; }
 button-wrong { background: #dc3545; }
 button-yay { background: #8f00ff; }
 button-applouse { background: #ffc107; color: black; }
+
+.remove-button {
+padding: 0.1rem 0.45rem;
+  margin: 0 0.3rem;
+  border: none;
+  border-radius: 8px;
+  background: #ff00ff;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
 
 #sound-table {
   width: 100%;

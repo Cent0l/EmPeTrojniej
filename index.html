@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="language" content="pl">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="language" content="pl" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EmPeTrójniej</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -21,29 +21,29 @@
     </section>
 
     <section id="sounds">
-	<center>
-      <h2>Odtwarzacz dźwięków</h2>
-      <table id="sound-table"></table>
-      <select id="sound-select"></select>
-	  <br> <br>
-      <button id="play-sound">Odtwórz</button>
-      <audio id="audio-player" controls></audio>
-		<br> <br>
-      <div id="quick-buttons">
-        <button-correct onclick="playQuickSound('sounds/correct.mp3')">Correct</button-correct>
-        <button-wrong onclick="playQuickSound('sounds/wrong.mp3')">Wrong</button-wrong>
-        <button-yay onclick="playQuickSound('sounds/yay.mp3')">Yay</button-yay>
-        <button-applouse onclick="playQuickSound('sounds/applause.mp3')">Brawa</button-applouse>
-      </div>
-	  <div class="lifeline-description">
-	<p><strong>KOŁA RATUNKOWE</strong></p>
-		<ol>
-		<li>Tagi gry</li>
-		<li>Rok wydania</li>
-		<li>Platforma wydania</li>
-		</ol>
-	</div>	
-	  </center>
+      <center>
+        <h2>Odtwarzacz dźwięków</h2>
+        <table id="sound-table"></table>
+        <select id="sound-select"></select>
+        <br><br>
+        <button id="play-sound">Odtwórz</button>
+        <audio id="audio-player" controls></audio>
+        <br><br>
+        <div id="quick-buttons">
+          <button-correct onclick="playQuickSound('sounds/correct.mp3')">Correct</button-correct>
+          <button-wrong onclick="playQuickSound('sounds/wrong.mp3')">Wrong</button-wrong>
+          <button-yay onclick="playQuickSound('sounds/yay.mp3')">Yay</button-yay>
+          <button-applouse onclick="playQuickSound('sounds/applause.mp3')">Brawa</button-applouse>
+        </div>
+        <div class="lifeline-description">
+          <p><strong>KOŁA RATUNKOWE</strong></p>
+          <ol>
+            <li>Tagi gry</li>
+            <li>Rok wydania</li>
+            <li>Platforma wydania</li>
+          </ol>
+        </div>
+      </center>
     </section>
   </main>
 
@@ -81,47 +81,66 @@
       playerDiv.classList.add("player");
       playerDiv.id = player.id;
 
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "X";
+      deleteButton.onclick = () => removePlayer(player.id);
+      deleteButton.classList.add("remove-button");
+
       const avatarDiv = document.createElement("div");
       avatarDiv.classList.add("player-avatar");
       avatarDiv.style.backgroundImage = player.avatar ? `url('${player.avatar}')` : "none";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.classList.add("player-name");
+      nameSpan.textContent = player.name;
+      nameSpan.onclick = () => editPlayerName(player.id);
+
+      const pointsSpan = document.createElement("span");
+      pointsSpan.classList.add("player-points");
+      pointsSpan.id = `points-${player.id}`;
+      pointsSpan.textContent = player.points;
+
+      const minusButton = document.createElement("button");
+      minusButton.textContent = "-";
+      minusButton.onclick = () => updateScore(player.id, -1);
+
+      const plusButton = document.createElement("button");
+      plusButton.textContent = "+";
+      plusButton.onclick = () => updateScore(player.id, 1);
 
       const lifelinesDiv = document.createElement("div");
       lifelinesDiv.classList.add("lifelines");
 
       const icons = ["#️⃣", "📅", "🎮"];
+      for (let i = 0; i < 3; i++) {
+        const lifeline = document.createElement("div");
+        lifeline.classList.add("lifeline");
+        lifeline.dataset.index = i;
 
-for (let i = 0; i < 3; i++) {
-	const lifeline = document.createElement("div");
-	lifeline.classList.add("lifeline");
-	lifeline.dataset.index = i;
-	
-	if (player.lifelines && player.lifelines[i]) {
-		lifeline.classList.add("checked");
-		lifeline.textContent = icons[i]; // wyświetla emoji
-	}
-	
-		lifeline.addEventListener("click", () => {
-		const index = lifeline.dataset.index;
-		player.lifelines[index] = !player.lifelines[index];
-		lifeline.classList.toggle("checked");
-		lifeline.textContent = player.lifelines[index] ? icons[index] : "";
-		savePlayers();
-	});
+        if (player.lifelines && player.lifelines[i]) {
+          lifeline.classList.add("checked");
+          lifeline.textContent = icons[i];
+        }
 
-  lifelinesDiv.appendChild(lifeline);
-}
+        lifeline.addEventListener("click", () => {
+          const index = lifeline.dataset.index;
+          player.lifelines[index] = !player.lifelines[index];
+          lifeline.classList.toggle("checked");
+          lifeline.textContent = player.lifelines[index] ? icons[index] : "";
+          savePlayers();
+        });
 
+        lifelinesDiv.appendChild(lifeline);
+      }
 
-      playerDiv.innerHTML = `
-        <span class="player-name" onclick="editPlayerName('${player.id}')">${player.name}</span>
-        <span class="player-points" id="points-${player.id}">${player.points}</span>
-        <button onclick="updateScore('${player.id}', -1)">-</button>
-        <button onclick="updateScore('${player.id}', 1)">+</button>
-        <button onclick="removePlayer('${player.id}')">Usuń</button>
-      `;
-
-      playerDiv.prepend(avatarDiv);
+      playerDiv.appendChild(deleteButton);
+      playerDiv.appendChild(avatarDiv);
+      playerDiv.appendChild(nameSpan);
+      playerDiv.appendChild(pointsSpan);
+      playerDiv.appendChild(minusButton);
+      playerDiv.appendChild(plusButton);
       playerDiv.appendChild(lifelinesDiv);
+
       playerList.appendChild(playerDiv);
     }
 
