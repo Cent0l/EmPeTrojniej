@@ -28,10 +28,10 @@
         <audio id="audio-player" controls></audio>
         <br><br>
         <div id="quick-buttons">
-          <button onclick="playQuickSound('sounds/correct.mp3', this)">Correct</button>
-          <button onclick="playQuickSound('sounds/wrong.mp3', this)">Wrong</button>
-          <button onclick="playQuickSound('sounds/yay.mp3', this)">Yay</button>
-          <button onclick="playQuickSound('sounds/applause.mp3', this)">Brawa</button>
+          <button onclick="playFixedSound('sounds/correct.mp3')">Correct</button>
+          <button onclick="playFixedSound('sounds/wrong.mp3')">Wrong</button>
+          <button onclick="playFixedSound('sounds/yay.mp3')">Yay</button>
+          <button onclick="playFixedSound('sounds/applause.mp3')">Brawa</button>
         </div>
         <div class="lifeline-description">
           <p><strong>KOŁA RATUNKOWE</strong></p>
@@ -211,6 +211,11 @@
       saveActiveSounds();
     }
 
+    function playFixedSound(soundPath) {
+      audioPlayer.src = soundPath;
+      audioPlayer.play();
+    }
+
     fetch("sounds.json")
       .then(response => response.json())
       .then(soundFiles => {
@@ -261,7 +266,6 @@
     });
 
     addPlayerButton.addEventListener("click", () => addPlayer());
-
     window.addEventListener("DOMContentLoaded", () => {
       loadStorage();
       players.forEach(renderPlayer);
