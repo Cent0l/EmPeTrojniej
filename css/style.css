@@ -1,6 +1,11 @@
-html, body {
+/* RESET */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: radial-gradient(circle, #32064a, #000000);
@@ -10,6 +15,7 @@ html, body {
   flex-direction: column;
 }
 
+/* HEADER */
 header {
   background: linear-gradient(90deg, #000, #52006A);
   padding: 1.5rem 0;
@@ -21,6 +27,7 @@ header {
   border-bottom: 4px solid #ff00ff;
 }
 
+/* MAIN */
 main {
   display: flex;
   flex-wrap: wrap;
@@ -30,6 +37,7 @@ main {
   flex: 1;
 }
 
+/* SECTION BOXES */
 section {
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid #8f00ff;
@@ -41,6 +49,7 @@ section {
   flex: 1;
 }
 
+/* HEADINGS */
 h2 {
   text-align: center;
   margin-bottom: 1rem;
@@ -49,6 +58,7 @@ h2 {
   text-shadow: 0 0 5px #8f00ff;
 }
 
+/* PLAYER BLOCK */
 .player {
   display: flex;
   align-items: center;
@@ -60,6 +70,7 @@ h2 {
   box-shadow: 0 0 10px #8f00ff44;
 }
 
+/* AVATAR */
 .player-avatar {
   width: 70px;
   height: 70px;
@@ -71,6 +82,7 @@ h2 {
   background-color: #444;
 }
 
+/* NAME + SCORE */
 .player-name {
   flex: 1;
   font-weight: bold;
@@ -83,6 +95,7 @@ h2 {
   font-size: 1.1rem;
 }
 
+/* UNIVERSAL BUTTONS */
 button {
   padding: 0.5rem 0.7rem;
   margin: 0 0.3rem;
@@ -100,19 +113,18 @@ button:hover {
   transform: scale(1.05);
 }
 
+/* REMOVE PLAYER BUTTON */
 .remove-button {
-padding: 0.1rem 0.45rem;
+  padding: 0.1rem 0.45rem;
   margin: 0 0.3rem;
-  border: none;
   border-radius: 8px;
   background: #ff00ff;
   color: white;
-  cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s;	
 }
 
-button-correct, button-wrong, button-yay, button-applouse {
+/* QUICK SOUND BUTTONS (Correct, Wrong...) */
+#quick-buttons button {
   display: inline-block;
   padding: 0.4rem 1rem;
   font-weight: bold;
@@ -121,23 +133,22 @@ button-correct, button-wrong, button-yay, button-applouse {
   border: none;
   color: white;
   cursor: pointer;
-  text-align: center;
   margin: 0.3rem 0.4rem;
   min-width: 90px;
-  
 }
 
-button-correct { background: #28a745; }
-button-wrong { background: #dc3545; }
-button-yay { background: #8f00ff; }
-button-applouse { background: #ffc107; color: black; }
+#quick-buttons button:nth-child(1) { background: #28a745; }
+#quick-buttons button:nth-child(2) { background: #dc3545; }
+#quick-buttons button:nth-child(3) { background: #8f00ff; }
+#quick-buttons button:nth-child(4) { background: #ffc107; color: black; }
 
-button.active-sound {
+/* ACTIVE BUTTON ONLY FOR TABLE BUTTONS */
+#sound-table button.active-sound {
   background-color: #005555 !important;
   color: white;
 }
 
-
+/* SOUND TABLE */
 #sound-table {
   width: 100%;
   margin-bottom: 1rem;
@@ -162,72 +173,29 @@ button.active-sound {
   background: #009bd1;
 }
 
-select, audio {
+/* SELECT */
+select {
+  background-color: #1e0033;
+  color: #ffddff;
+  border: 2px solid #8f00ff;
+  padding: 0.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 0 0 8px #8f00ff44;
+}
+
+select:focus {
+  outline: none;
+  border-color: #ff00ff;
+  box-shadow: 0 0 12px #ff00ff88;
+}
+
+/* AUDIO PLAYER */
+audio {
   width: 100%;
   margin-top: 0.8rem;
   border-radius: 5px;
-}
-
-footer {
-  background: linear-gradient(90deg, #52006A, #000);
-  color: #ccc;
-  text-align: center;
-  padding: 0.7rem 0;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  border-top: 3px solid #ff00ff;
-}
-
-.lifeline {
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
-  font-weight: normal;
-  transition: background 0.2s;
-}
-
-
-.lifeline {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #ff00ff;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  color: #000;
-}
-
-.lifeline.checked {
-  background-color: #28a745;
-  color: white;
-  border-color: #28a745;
-}
-
-.lifeline-description {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 10px;
-  border: 1px solid #8f00ff88;
-  color: #eee;
-  font-size: 0.95rem;
-}
-
-.lifeline-description p {
-  margin: 0 0 0.5rem;
-  font-weight: bold;
-  color: #ffddff;
-  text-shadow: 0 0 4px #8f00ff;
-}
-
-.lifeline-description ol {
-  padding-left: 1.2rem;
-  margin: 0;
 }
 
 audio::-webkit-media-controls-panel {
@@ -248,19 +216,60 @@ audio::-webkit-media-controls-time-remaining-display {
   color: #ffddff;
 }
 
-select {
-  background-color: #1e0033;
-  color: #ffddff;
-  border: 2px solid #8f00ff;
-  padding: 0.5rem;
-  font-weight: bold;
-  border-radius: 8px;
-  font-size: 1rem;
-  box-shadow: 0 0 8px #8f00ff44;
+/* FOOTER */
+footer {
+  background: linear-gradient(90deg, #52006A, #000);
+  color: #ccc;
+  text-align: center;
+  padding: 0.7rem 0;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  border-top: 3px solid #ff00ff;
 }
 
-select:focus {
-  outline: none;
-  border-color: #ff00ff;
-  box-shadow: 0 0 12px #ff00ff88;
+/* LIFELINES */
+.lifeline {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ff00ff;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000;
+  transition: background 0.2s;
+  margin-left: 0.3rem;
+}
+
+.lifeline.checked {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* LIFELINE DESCRIPTION */
+.lifeline-description {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid #8f00ff88;
+  color: #eee;
+  font-size: 0.95rem;
+}
+
+.lifeline-description p {
+  margin: 0 0 0.5rem;
+  font-weight: bold;
+  color: #ffddff;
+  text-shadow: 0 0 4px #8f00ff;
+}
+
+.lifeline-description ol {
+  padding-left: 1.2rem;
+  margin: 0;
 }
