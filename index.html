@@ -158,26 +158,41 @@
       playerList.appendChild(playerDiv);
     }
 
-    function showAvatarPicker(player, avatarDiv) {
-      const picker = document.createElement("div");
-      picker.classList.add("avatar-picker");
+function showAvatarPicker(player, avatarDiv) {
+  // Usuń stare pickery
+  document.querySelectorAll('.avatar-picker').forEach(p => p.remove());
 
-      avatars.forEach(url => {
-        const option = document.createElement("div");
-        option.classList.add("avatar-option");
-        option.style.backgroundImage = `url('${url}')`;
-        option.onclick = () => {
-          player.avatar = url;
-          avatarDiv.style.backgroundImage = `url('${url}')`;
-          picker.remove();
-          savePlayers();
-        };
-        picker.appendChild(option);
-      });
+  const picker = document.createElement("div");
+  picker.classList.add("avatar-picker");
 
+  avatars.forEach(url => {
+    const option = document.createElement("div");
+    option.classList.add("avatar-option");
+    option.style.backgroundImage = `url('${url}')`;
+
+    option.addEventListener("click", (e) => {
+      e.stopPropagation();
+      player.avatar = url;
+      avatarDiv.style.backgroundImage = `url('${url}')`;
+      savePlayers();
       document.querySelectorAll('.avatar-picker').forEach(p => p.remove());
-      avatarDiv.appendChild(picker);
-    }
+    });
+
+    picker.appendChild(option);
+  });
+
+  avatarDiv.appendChild(picker);
+  
+  setTimeout(() => {
+    const closeOnClickOutside = (e) => {
+      if (!picker.contains(e.target)) {
+        picker.remove();
+        document.removeEventListener("click", closeOnClickOutside);
+      }
+    };
+    document.addEventListener("click", closeOnClickOutside);
+  }, 0);
+}
 
     function updateScore(playerId, change) {
       const player = players.find(p => p.id === playerId);
