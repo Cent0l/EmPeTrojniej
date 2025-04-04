@@ -273,3 +273,28 @@ footer {
   padding-left: 1.2rem;
   margin: 0;
 }
+
+.avatar-picker {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  background: #ddd;
+  padding: 5px;
+  border: 2px inset #aaa;
+  z-index: 999;
+  top: 70px;
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #444;
+  cursor: pointer;
+}
+
+.avatar-option:hover {
+  border-color: #000080;
+}
