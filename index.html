@@ -79,7 +79,7 @@
 
     function addPlayer(name = `Gracz ${players.length + 1}`, points = 0) {
       const playerId = `player-${Date.now()}`;
-      const playerAvatar = avatars.length > players.length ? avatars[players.length] : null;
+      const playerAvatar = avatars.length > 0 ? avatars[players.length % avatars.length] : null;
       const player = { id: playerId, name, points, avatar: playerAvatar, lifelines: [false, false, false] };
       players.push(player);
       renderPlayer(player);
@@ -99,6 +99,10 @@
       const avatarDiv = document.createElement("div");
       avatarDiv.classList.add("player-avatar");
       avatarDiv.style.backgroundImage = player.avatar ? `url('${player.avatar}')` : "none";
+
+      avatarDiv.addEventListener("click", () => {
+        showAvatarPicker(player, avatarDiv);
+      });
 
       const nameSpan = document.createElement("span");
       nameSpan.classList.add("player-name");
@@ -152,6 +156,27 @@
       playerDiv.appendChild(lifelinesDiv);
 
       playerList.appendChild(playerDiv);
+    }
+
+    function showAvatarPicker(player, avatarDiv) {
+      const picker = document.createElement("div");
+      picker.classList.add("avatar-picker");
+
+      avatars.forEach(url => {
+        const option = document.createElement("div");
+        option.classList.add("avatar-option");
+        option.style.backgroundImage = `url('${url}')`;
+        option.onclick = () => {
+          player.avatar = url;
+          avatarDiv.style.backgroundImage = `url('${url}')`;
+          picker.remove();
+          savePlayers();
+        };
+        picker.appendChild(option);
+      });
+
+      document.querySelectorAll('.avatar-picker').forEach(p => p.remove());
+      avatarDiv.appendChild(picker);
     }
 
     function updateScore(playerId, change) {
