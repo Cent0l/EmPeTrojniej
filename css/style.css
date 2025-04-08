@@ -113,7 +113,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* REMOVE PLAYER BUTTON */
 .remove-button {
   padding: 0.1rem 0.45rem;
   margin: 0 0.3rem;
@@ -123,7 +122,7 @@ button:hover {
   font-weight: bold;
 }
 
-/* QUICK SOUND BUTTONS (Correct, Wrong...) */
+/* QUICK SOUND BUTTONS */
 #quick-buttons button {
   display: inline-block;
   padding: 0.4rem 1rem;
@@ -142,7 +141,6 @@ button:hover {
 #quick-buttons button:nth-child(3) { background: #8f00ff; }
 #quick-buttons button:nth-child(4) { background: #ffc107; color: black; }
 
-/* ACTIVE BUTTON ONLY FOR TABLE BUTTONS */
 #sound-table button.active-sound {
   background-color: #005555 !important;
   color: white;
@@ -173,7 +171,7 @@ button:hover {
   background: #009bd1;
 }
 
-/* SELECT */
+/* SELECT + AUDIO */
 select {
   background-color: #1e0033;
   color: #ffddff;
@@ -183,6 +181,8 @@ select {
   border-radius: 8px;
   font-size: 1rem;
   box-shadow: 0 0 8px #8f00ff44;
+  width: 100%;
+  margin-top: 0.8rem;
 }
 
 select:focus {
@@ -191,7 +191,6 @@ select:focus {
   box-shadow: 0 0 12px #ff00ff88;
 }
 
-/* AUDIO PLAYER */
 audio {
   width: 100%;
   margin-top: 0.8rem;
@@ -202,17 +201,6 @@ audio::-webkit-media-controls-panel {
   background-color: #ff00ff;
   border-radius: 0;
   border: none;
-  color: #ffddff;
-}
-
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-volume-slider {
-  filter: hue-rotate(290deg) brightness(1.1);
-}
-
-audio::-webkit-media-controls-timeline,
-audio::-webkit-media-controls-current-time-display,
-audio::-webkit-media-controls-time-remaining-display {
   color: #ffddff;
 }
 
@@ -260,18 +248,35 @@ footer {
   border: 1px solid #8f00ff88;
   color: #eee;
   font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .lifeline-description p {
-  margin: 0 0 0.5rem;
   font-weight: bold;
   color: #ffddff;
   text-shadow: 0 0 4px #8f00ff;
+  margin-bottom: 0.7rem;
 }
 
-.lifeline-description ol {
-  padding-left: 1.2rem;
+.lifeline-description ul {
+  list-style: none;
+  padding: 0;
   margin: 0;
+}
+
+.lifeline-description li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.lifeline-description li .emoji {
+  margin-right: 0.6rem;
+  font-size: 1.2rem;
 }
 
 .avatar-picker {
