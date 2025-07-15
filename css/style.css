@@ -303,3 +303,37 @@ footer {
 .avatar-option:hover {
   border-color: #000080;
 }
+
+/* ----------------------------------------
+   TURy i odpowiadający — wskaźniki kółeczka
+   ---------------------------------------- */
+
+/* wspólne */
+.indicator {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0.5rem;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  vertical-align: middle;
+  opacity: 0.3;
+  transition: opacity 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+/* gdy aktywne, pełne kółeczko */
+.indicator.active {
+  opacity: 1;
+}
+
+/* niebieskie = czyja tura */
+.turn-indicator.active {
+  background-color: #00b0ff;
+  border-color: #00b0ff;
+}
+
+/* pomarańczowe = kto odpowiada */
+.answer-indicator.active {
+  background-color: #ffab00;
+  border-color: #ffab00;
+}

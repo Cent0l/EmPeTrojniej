@@ -2,315 +2,315 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="language" content="pl" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EmPeTrójniej</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
   <header>EmPeTrójniej</header>
 
   <main>
+    <!-- Sekcja graczy -->
     <section id="players">
       <h2>Gracze</h2>
       <div id="player-list"></div>
       <button id="add-player">Dodaj gracza</button>
+      <button id="next-turn-btn">Następna tura</button>
+      <button id="answer-btn">Odpowiada</button>
     </section>
 
+    <!-- Sekcja odtwarzacza dźwięków -->
     <section id="sounds">
-      <center>
-        <h2>Odtwarzacz dźwięków</h2>
-        <table id="sound-table"></table>
-        <select id="sound-select"></select>
-        <br><br>
-        <button id="play-sound">Odtwórz</button>
-        <audio id="audio-player" controls></audio>
-        <br><br>
-        <div id="quick-buttons">
-          <button onclick="playFixedSound('sounds/correct.mp3')">Correct</button>
-          <button onclick="playFixedSound('sounds/wrong.mp3')">Wrong</button>
-          <button onclick="playFixedSound('sounds/yay.mp3')">Yay</button>
-          <button onclick="playFixedSound('sounds/applause.mp3')">Brawa</button>
-        </div>
-	<div class="lifeline-description">
-	<p><strong>KOŁA RATUNKOWE</strong></p>
-	<ol>
-		<li><span class="lifeline-emoji">#️⃣</span> Tagi gry</li>
-		<li><span class="lifeline-emoji">📅</span> Rok wydania</li>
-		<li><span class="lifeline-emoji">🎮</span> Platforma wydania</li>
-	</ol>
-	
-	</div>
-
-      </center>
+      <h2>Odtwarzacz dźwięków</h2>
+      <table id="sound-table"></table>
+      <select id="sound-select"></select>
+      <button id="play-sound">Odtwórz</button>
+      <audio id="audio-player" controls></audio>
+      <div id="quick-buttons">
+        <button onclick="playFixedSound('sounds/correct.mp3')">Correct</button>
+        <button onclick="playFixedSound('sounds/wrong.mp3')">Wrong</button>
+        <button onclick="playFixedSound('sounds/yay.mp3')">Yay</button>
+        <button onclick="playFixedSound('sounds/applause.mp3')">Brawa</button>
+      </div>
+      <div class="lifeline-description">
+        <p><strong>KOŁA RATUNKOWE</strong></p>
+        <ol>
+          <li><span class="lifeline-emoji">#️⃣</span> Tagi gry</li>
+          <li><span class="lifeline-emoji">📅</span> Rok wydania</li>
+          <li><span class="lifeline-emoji">🎮</span> Platforma wydania</li>
+        </ol>
+      </div>
     </section>
   </main>
 
   <footer>Teleturniej Toczkensa. Created by SiemkaMati</footer>
 
   <script>
-    const playerList = document.getElementById("player-list");
-    const addPlayerButton = document.getElementById("add-player");
-    const soundTable = document.getElementById("sound-table");
-    const soundSelect = document.getElementById("sound-select");
-    const playSoundButton = document.getElementById("play-sound");
-    const audioPlayer = document.getElementById("audio-player");
+    // --- DOM ---
+    const playerList    = document.getElementById("player-list");
+    const addBtn        = document.getElementById("add-player");
+    const nextBtn       = document.getElementById("next-turn-btn");
+    const answerBtn     = document.getElementById("answer-btn");
+    const soundTable    = document.getElementById("sound-table");
+    const soundSelect   = document.getElementById("sound-select");
+    const playSoundBtn  = document.getElementById("play-sound");
+    const audioPlayer   = document.getElementById("audio-player");
 
-    let players = [];
-    let avatars = [];
-    let activeSounds = [];
+    // --- STAN APLIKACJI ---
+    let currentTurnIndex   = -1;
+    let currentAnswerIndex = -1;
+    let players            = [];
+    let avatars            = [];
+    let activeSounds       = [];
 
+    // --- LOCALSTORAGE ---
     function loadStorage() {
-      players = JSON.parse(localStorage.getItem("players")) || [];
+      players      = JSON.parse(localStorage.getItem("players"))      || [];
       activeSounds = JSON.parse(localStorage.getItem("activeSounds")) || [];
     }
+    function savePlayers()      { localStorage.setItem("players", JSON.stringify(players)); }
+    function saveActiveSounds() { localStorage.setItem("activeSounds", JSON.stringify(activeSounds)); }
 
-    function savePlayers() {
-      localStorage.setItem("players", JSON.stringify(players));
-    }
+    // wczytaj stan od razu, by activeSounds było dostępne przy budowie UI
+    loadStorage();
 
-    function saveActiveSounds() {
-      localStorage.setItem("activeSounds", JSON.stringify(activeSounds));
-    }
-
+    // --- FETCH AVATARÓW ---
     fetch("avatars.json")
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => avatars = data)
       .catch(err => console.error("Błąd avatarów:", err));
 
-    function addPlayer(name = `Gracz ${players.length + 1}`, points = 0) {
-      const playerId = `player-${Date.now()}`;
-      const playerAvatar = avatars.length > 0 ? avatars[players.length % avatars.length] : null;
-      const player = { id: playerId, name, points, avatar: playerAvatar, lifelines: [false, false, false] };
-      players.push(player);
-      renderPlayer(player);
-      savePlayers();
-    }
-
-    function renderPlayer(player) {
-      const playerDiv = document.createElement("div");
-      playerDiv.classList.add("player");
-      playerDiv.id = player.id;
-
-      const deleteButton = document.createElement("button");
-      deleteButton.textContent = "X";
-      deleteButton.onclick = () => removePlayer(player.id);
-      deleteButton.classList.add("remove-button");
-
-      const avatarDiv = document.createElement("div");
-      avatarDiv.classList.add("player-avatar");
-      avatarDiv.style.backgroundImage = player.avatar ? `url('${player.avatar}')` : "none";
-
-      avatarDiv.addEventListener("click", () => {
-        showAvatarPicker(player, avatarDiv);
-      });
-
-      const nameSpan = document.createElement("span");
-      nameSpan.classList.add("player-name");
-      nameSpan.textContent = player.name;
-      nameSpan.onclick = () => editPlayerName(player.id);
-
-      const pointsSpan = document.createElement("span");
-      pointsSpan.classList.add("player-points");
-      pointsSpan.id = `points-${player.id}`;
-      pointsSpan.textContent = player.points;
-
-      const minusButton = document.createElement("button");
-      minusButton.textContent = "-";
-      minusButton.onclick = () => updateScore(player.id, -1);
-
-      const plusButton = document.createElement("button");
-      plusButton.textContent = "+";
-      plusButton.onclick = () => updateScore(player.id, 1);
-
-      const lifelinesDiv = document.createElement("div");
-      lifelinesDiv.classList.add("lifelines");
-
-      const icons = ["#️⃣", "📅", "🎮"];
-      for (let i = 0; i < 3; i++) {
-        const lifeline = document.createElement("div");
-        lifeline.classList.add("lifeline");
-        lifeline.dataset.index = i;
-
-        if (player.lifelines && player.lifelines[i]) {
-          lifeline.classList.add("checked");
-          lifeline.textContent = icons[i];
-        }
-
-        lifeline.addEventListener("click", () => {
-          const index = lifeline.dataset.index;
-          player.lifelines[index] = !player.lifelines[index];
-          lifeline.classList.toggle("checked");
-          lifeline.textContent = player.lifelines[index] ? icons[index] : "";
-          savePlayers();
-        });
-
-        lifelinesDiv.appendChild(lifeline);
-      }
-
-      playerDiv.appendChild(deleteButton);
-      playerDiv.appendChild(avatarDiv);
-      playerDiv.appendChild(nameSpan);
-      playerDiv.appendChild(pointsSpan);
-      playerDiv.appendChild(minusButton);
-      playerDiv.appendChild(plusButton);
-      playerDiv.appendChild(lifelinesDiv);
-
-      playerList.appendChild(playerDiv);
-    }
-
-function showAvatarPicker(player, avatarDiv) {
-  // Usuń stare pickery
-  document.querySelectorAll('.avatar-picker').forEach(p => p.remove());
-
-  const picker = document.createElement("div");
-  picker.classList.add("avatar-picker");
-
-  avatars.forEach(url => {
-    const option = document.createElement("div");
-    option.classList.add("avatar-option");
-    option.style.backgroundImage = `url('${url}')`;
-
-    option.addEventListener("click", (e) => {
-      e.stopPropagation();
-      player.avatar = url;
-      avatarDiv.style.backgroundImage = `url('${url}')`;
-      savePlayers();
-      document.querySelectorAll('.avatar-picker').forEach(p => p.remove());
-    });
-
-    picker.appendChild(option);
-  });
-
-  avatarDiv.appendChild(picker);
-  
-  setTimeout(() => {
-    const closeOnClickOutside = (e) => {
-      if (!picker.contains(e.target)) {
-        picker.remove();
-        document.removeEventListener("click", closeOnClickOutside);
-      }
-    };
-    document.addEventListener("click", closeOnClickOutside);
-  }, 0);
-}
-
-    function updateScore(playerId, change) {
-      const player = players.find(p => p.id === playerId);
-      player.points += change;
-      document.getElementById(`points-${playerId}`).textContent = player.points;
-      savePlayers();
-    }
-
-    function editPlayerName(playerId) {
-      const player = players.find(p => p.id === playerId);
-      const playerNameSpan = document.querySelector(`#${playerId} .player-name`);
-
-      const input = document.createElement("input");
-      input.type = "text";
-      input.value = player.name;
-      input.className = "player-name-input";
-
-      input.addEventListener("blur", () => {
-        player.name = input.value.trim() || player.name;
-        playerNameSpan.textContent = player.name;
-        input.replaceWith(playerNameSpan);
-        savePlayers();
-      });
-
-      input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") input.blur();
-      });
-
-      playerNameSpan.replaceWith(input);
-      input.focus();
-    }
-
-    function removePlayer(playerId) {
-      if (confirm("Czy na pewno chcesz usunąć tego gracza?")) {
-        players = players.filter(p => p.id !== playerId);
-        document.getElementById(playerId).remove();
-        savePlayers();
-      }
-    }
-
-    function playQuickSound(soundPath, button) {
-      const index = activeSounds.indexOf(soundPath);
-
-      if (index > -1) {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-        activeSounds.splice(index, 1);
-        button.classList.remove("active-sound");
-      } else {
-        audioPlayer.src = soundPath;
-        audioPlayer.play();
-        activeSounds.push(soundPath);
-        button.classList.add("active-sound");
-      }
-
-      saveActiveSounds();
-    }
-
-    function playFixedSound(soundPath) {
-      audioPlayer.src = soundPath;
-      audioPlayer.play();
-    }
-
+    // --- GENERUJ SOUND TABLE + SELECT ---
     fetch("sounds.json")
-      .then(response => response.json())
-      .then(soundFiles => {
-        const soundGroups = {};
-        soundFiles.forEach(file => {
-          const match = file.match(/^(\d)/);
-          if (match) {
-            const group = match[1];
-            if (!soundGroups[group]) soundGroups[group] = [];
-            soundGroups[group].push(file);
-          }
+      .then(r => r.json())
+      .then(files => {
+        // pogrupuj wg pierwszej cyfry w nazwie
+        const groups = {};
+        files.forEach(f => {
+          const g = f.match(/^(\d)/)?.[1] || '_';
+          (groups[g] = groups[g] || []).push(f);
         });
-
-        const maxRows = Math.max(...Object.values(soundGroups).map(arr => arr.length));
-
+        const maxRows = Math.max(...Object.values(groups).map(a => a.length));
         for (let row = 0; row < maxRows; row++) {
           const tr = document.createElement("tr");
-          Object.keys(soundGroups).sort().forEach(group => {
+          Object.keys(groups).sort().forEach(g => {
             const td = document.createElement("td");
-            if (soundGroups[group][row]) {
-              const file = soundGroups[group][row];
-              const soundPath = `sounds/${file}`;
-              const button = document.createElement("button");
-              button.textContent = file.replace(/^\d+_/, "").replace(".mp3", "").replace(/_/g, " ");
-              button.onclick = () => playQuickSound(soundPath, button);
-              if (activeSounds.includes(soundPath)) {
-                button.classList.add("active-sound");
-              }
-              td.appendChild(button);
+            const fname = groups[g][row];
+            if (fname) {
+              const path = `sounds/${fname}`;
+              const btn = document.createElement("button");
+              btn.textContent = fname
+                .replace(/^\d+_/, "")
+                .replace(/_/g, " ")
+                .replace(".mp3", "");
+              btn.onclick = () => playQuickSound(path, btn);
+              if (activeSounds.includes(path)) btn.classList.add("active-sound");
+              td.appendChild(btn);
             }
             tr.appendChild(td);
           });
           soundTable.appendChild(tr);
         }
-
-        soundFiles.forEach(file => {
-          const option = document.createElement("option");
-          option.value = `sounds/${file}`;
-          option.textContent = file;
-          soundSelect.appendChild(option);
+        // wypełnij select
+        files.forEach(f => {
+          const opt = document.createElement("option");
+          opt.value = `sounds/${f}`;
+          opt.textContent = f;
+          soundSelect.appendChild(opt);
         });
       })
-      .catch(error => console.error("Błąd podczas ładowania dźwięków:", error));
+      .catch(err => console.error("Błąd przy ładowaniu dźwięków:", err));
 
-    playSoundButton.addEventListener("click", () => {
+    // --- AKCJE DŹWIĘKOWE ---
+    function playQuickSound(path, btn) {
+      const idx = activeSounds.indexOf(path);
+      if (idx > -1) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        activeSounds.splice(idx, 1);
+        btn.classList.remove("active-sound");
+      } else {
+        audioPlayer.src = path;
+        audioPlayer.play();
+        activeSounds.push(path);
+        btn.classList.add("active-sound");
+      }
+      saveActiveSounds();
+    }
+    function playFixedSound(path) {
+      audioPlayer.src = path;
+      audioPlayer.play();
+    }
+    playSoundBtn.addEventListener("click", () => {
       audioPlayer.src = soundSelect.value;
       audioPlayer.play();
     });
 
-    addPlayerButton.addEventListener("click", () => addPlayer());
+    // --- WSKAŹNIKI TUR I ODPOWIADAJĄCEGO ---
+    function updateIndicators() {
+      const items = playerList.querySelectorAll('.player');
+      items.forEach((el, i) => {
+        el.querySelector('.turn-indicator')
+          .classList.toggle('active', i === currentTurnIndex);
+        el.querySelector('.answer-indicator')
+          .classList.toggle('active', i === currentAnswerIndex);
+      });
+    }
+
+    function handleNext() {
+      const count = players.length;
+      if (!count) return;
+      currentTurnIndex = (currentTurnIndex + 1) % count;
+      currentAnswerIndex = currentTurnIndex;
+      updateIndicators();
+    }
+
+    function handleAnswer() {
+      const count = players.length;
+      if (!count) return;
+      currentAnswerIndex = (currentAnswerIndex + 1) % count;
+      updateIndicators();
+    }
+
+    nextBtn.addEventListener("click", handleNext);
+    answerBtn.addEventListener("click", handleAnswer);
+
+    // --- DODAWANIE, RENDER, EDYCJA GRACZA ---
+    function addPlayer() {
+      const id = `player-${Date.now()}`;
+      const avatar = avatars.length ? avatars[players.length % avatars.length] : null;
+      const p = { id, name: `Gracz ${players.length+1}`, points: 0, avatar, lifelines: [false,false,false] };
+      players.push(p);
+      renderPlayer(p);
+      savePlayers();
+      updateIndicators();
+    }
+    addBtn.addEventListener("click", addPlayer);
+
+    function renderPlayer(p) {
+      const div = document.createElement("div");
+      div.className = "player";
+      div.id = p.id;
+
+      const del = document.createElement("button");
+      del.textContent = "X"; del.className = "remove-button";
+      del.onclick = () => removePlayer(p.id);
+
+      const av = document.createElement("div");
+      av.className = "player-avatar";
+      av.style.backgroundImage = p.avatar ? `url('${p.avatar}')` : "none";
+      av.onclick = () => showAvatarPicker(p, av);
+
+      const nm = document.createElement("span");
+      nm.className = "player-name"; nm.textContent = p.name;
+      nm.onclick = () => editName(p.id);
+
+      const turnDot = document.createElement("span");
+      turnDot.className = "indicator turn-indicator";
+      turnDot.title = "Czyja jest tura";
+
+      const ansDot = document.createElement("span");
+      ansDot.className = "indicator answer-indicator";
+      ansDot.title = "Kto odpowiada";
+
+      const minus = document.createElement("button");
+      minus.textContent = "-"; minus.onclick = () => changeScore(p.id, -1);
+
+      const pts = document.createElement("span");
+      pts.className = "player-points"; pts.id = `points-${p.id}`;
+      pts.textContent = p.points;
+
+      const plus = document.createElement("button");
+      plus.textContent = "+"; plus.onclick = () => changeScore(p.id, 1);
+
+      const lfdiv = document.createElement("div");
+      lfdiv.className = "lifelines";
+      ["#️⃣","📅","🎮"].forEach((icon,i) => {
+        const lf = document.createElement("div");
+        lf.className = "lifeline";
+        lf.dataset.index = i;
+        if (p.lifelines[i]) {
+          lf.classList.add("checked");
+          lf.textContent = icon;
+        }
+        lf.onclick = () => {
+          p.lifelines[i] = !p.lifelines[i];
+          lf.classList.toggle("checked");
+          lf.textContent = p.lifelines[i] ? icon : "";
+          savePlayers();
+        };
+        lfdiv.appendChild(lf);
+      });
+
+      div.append(del, av, nm, turnDot, ansDot, minus, pts, plus, lfdiv);
+      playerList.appendChild(div);
+    }
+
+    function removePlayer(id) {
+      players = players.filter(p => p.id !== id);
+      document.getElementById(id).remove();
+      savePlayers();
+      updateIndicators();
+    }
+
+    function editName(id) {
+      const p = players.find(x => x.id === id);
+      const span = document.querySelector(`#${id} .player-name`);
+      const inp = document.createElement("input");
+      inp.type = "text"; inp.value = p.name; inp.className = "player-name-input";
+      inp.onblur = () => {
+        p.name = inp.value.trim() || p.name;
+        span.textContent = p.name;
+        inp.replaceWith(span);
+        savePlayers();
+      };
+      inp.onkeypress = e => { if (e.key === "Enter") inp.blur(); };
+      span.replaceWith(inp);
+      inp.focus();
+    }
+
+    function changeScore(id, delta) {
+      const p = players.find(x => x.id === id);
+      p.points += delta;
+      document.getElementById(`points-${id}`).textContent = p.points;
+      savePlayers();
+    }
+
+    function showAvatarPicker(p, div) {
+      document.querySelectorAll('.avatar-picker').forEach(x => x.remove());
+      const picker = document.createElement("div");
+      picker.className = "avatar-picker";
+      avatars.forEach(url => {
+        const opt = document.createElement("div");
+        opt.className = "avatar-option";
+        opt.style.backgroundImage = `url('${url}')`;
+        opt.onclick = e => {
+          e.stopPropagation();
+          p.avatar = url;
+          div.style.backgroundImage = `url('${url}')`;
+          savePlayers();
+          picker.remove();
+        };
+        picker.appendChild(opt);
+      });
+      div.appendChild(picker);
+      setTimeout(() => {
+        const fn = e => {
+          if (!picker.contains(e.target)) {
+            picker.remove();
+            document.removeEventListener("click", fn);
+          }
+        };
+        document.addEventListener("click", fn);
+      }, 0);
+    }
+
+    // --- INIT ---
     window.addEventListener("DOMContentLoaded", () => {
       loadStorage();
       players.forEach(renderPlayer);
+      updateIndicators();
     });
   </script>
 </body>
