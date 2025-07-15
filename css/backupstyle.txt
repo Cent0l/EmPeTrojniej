@@ -1,0 +1,339 @@
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle, #32064a, #000000);
+  color: white;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(90deg, #000, #52006A);
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff00ff;
+  letter-spacing: 2px;
+  border-bottom: 4px solid #ff00ff;
+}
+
+/* MAIN */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2rem;
+  flex: 1;
+}
+
+/* SECTION BOXES */
+section {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid #8f00ff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px #8f00ff66;
+  min-width: 380px;
+  max-width: 600px;
+  flex: 1;
+}
+
+/* HEADINGS */
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #ffddff;
+  text-shadow: 0 0 5px #8f00ff;
+}
+
+/* PLAYER BLOCK */
+.player {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #1e0033;
+  border: 1px solid #8f00ff88;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #8f00ff44;
+}
+
+/* AVATAR */
+.player-avatar {
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  border: 2px solid #ff00ff;
+  margin-right: 1rem;
+  background-color: #444;
+}
+
+/* NAME + SCORE */
+.player-name {
+  flex: 1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.player-points {
+  margin: 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* UNIVERSAL BUTTONS */
+button {
+  padding: 0.5rem 0.7rem;
+  margin: 0 0.3rem;
+  border: none;
+  border-radius: 8px;
+  background: #ff00ff;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: #da00da;
+  transform: scale(1.05);
+}
+
+.remove-button {
+  padding: 0.1rem 0.45rem;
+  margin: 0 0.3rem;
+  border-radius: 8px;
+  background: #ff00ff;
+  color: white;
+  font-weight: bold;
+}
+
+/* QUICK SOUND BUTTONS */
+#quick-buttons button {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin: 0.3rem 0.4rem;
+  min-width: 90px;
+}
+
+#quick-buttons button:nth-child(1) { background: #28a745; }
+#quick-buttons button:nth-child(2) { background: #dc3545; }
+#quick-buttons button:nth-child(3) { background: #8f00ff; }
+#quick-buttons button:nth-child(4) { background: #ffc107; color: black; }
+
+#sound-table button.active-sound {
+  background-color: #005555 !important;
+  color: white;
+}
+
+/* SOUND TABLE */
+#sound-table {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-spacing: 8px;
+}
+
+#sound-table td {
+  text-align: center;
+}
+
+#sound-table button {
+  width: 100%;
+  background: #00c4ff;
+  color: black;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: none;
+}
+
+#sound-table button:hover {
+  background: #009bd1;
+}
+
+/* SELECT + AUDIO */
+select {
+  background-color: #1e0033;
+  color: #ffddff;
+  border: 2px solid #8f00ff;
+  padding: 0.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 0 0 8px #8f00ff44;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+select:focus {
+  outline: none;
+  border-color: #ff00ff;
+  box-shadow: 0 0 12px #ff00ff88;
+}
+
+audio {
+  width: 100%;
+  margin-top: 0.8rem;
+  border-radius: 5px;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #ff00ff;
+  border-radius: 0;
+  border: none;
+  color: #ffddff;
+}
+
+/* FOOTER */
+footer {
+  background: linear-gradient(90deg, #52006A, #000);
+  color: #ccc;
+  text-align: center;
+  padding: 0.7rem 0;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  border-top: 3px solid #ff00ff;
+}
+
+/* LIFELINES */
+.lifeline {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ff00ff;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000;
+  transition: background 0.2s;
+  margin-left: 0.3rem;
+}
+
+.lifeline.checked {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* LIFELINE DESCRIPTION */
+.lifeline-description {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid #8f00ff88;
+  color: #eee;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lifeline-description p {
+  font-weight: bold;
+  color: #ffddff;
+  text-shadow: 0 0 4px #8f00ff;
+  margin-bottom: 0.7rem;
+}
+
+.lifeline-description ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lifeline-description li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.lifeline-description li .emoji {
+  margin-right: 0.6rem;
+  font-size: 1.2rem;
+}
+
+.avatar-picker {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  background: #ddd;
+  padding: 5px;
+  border: 2px inset #aaa;
+  z-index: 999;
+  top: 70px;
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #444;
+  cursor: pointer;
+}
+
+.avatar-option:hover {
+  border-color: #000080;
+}
+
+/* ----------------------------------------
+   TURy i odpowiadający — wskaźniki kółeczka
+   ---------------------------------------- */
+
+/* wspólne */
+.indicator {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0.5rem;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  vertical-align: middle;
+  opacity: 0.3;
+  transition: opacity 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+/* gdy aktywne, pełne kółeczko */
+.indicator.active {
+  opacity: 1;
+}
+
+/* niebieskie = czyja tura */
+.turn-indicator.active {
+  background-color: #00b0ff;
+  border-color: #00b0ff;
+}
+
+/* pomarańczowe = kto odpowiada */
+.answer-indicator.active {
+  background-color: #ffab00;
+  border-color: #ffab00;
+}
