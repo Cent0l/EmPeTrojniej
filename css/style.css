@@ -4,26 +4,24 @@
   margin: 0;
   padding: 0;
 }
-
 html, body {
   height: 100%;
   font-family: 'MS Sans Serif', Tahoma, Geneva, Verdana, sans-serif;
-  background: #C0C0C0;            /* płaskie retro tło */
-  color: #000080;                 /* granatowy tekst */
-  overflow-x: hidden;
+  background: #C0C0C0;
+  color: #000080;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* HEADER */
 header {
-  background: #000080;            /* ciemny niebieski */
-  color: #FFFFFF;
+  background: #000080;
+  color: #fff;
   padding: 1.5rem 0;
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
-  font-family: inherit;
   border-bottom: 2px solid #808080;
   box-shadow: 2px 2px 0 #808080;
 }
@@ -31,71 +29,69 @@ header {
 /* MAIN */
 main {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  padding: 2rem;
   gap: 2rem;
+  padding: 2rem;
   flex: 1;
   overflow-x: auto;
 }
 
-/* SECTION BOXES */
-section {
+/* ----------------------------- */
+/*   SEKCJA GRACZE (LEWA)       */
+/* ----------------------------- */
+section#players {
   background: #C0C0C0;
   border: 2px solid #000080;
-  border-radius: 0;
-  padding: 1.5rem;
   box-shadow: 4px 4px 0 #808080;
-  min-width: 380px;
-  max-width: 600px;
-  flex: 1 0 auto;
+  padding: 1.5rem;
   position: relative;
+  flex: 0 0 550px;
+  min-width: 550px;
+  max-width: 550px;
 }
 
-/* sekcja jako okno z belką */
-section::before {
-  content: attr(data-title);
-  position: absolute;
-  top: -1.6rem;
-  left: 0;
-  width: 100%;
-  height: 1.6rem;
-  background: #000080;
-  color: #FFFFFF;
-  line-height: 1.6rem;
-  padding-left: 0.5rem;
-  font-size: 0.9rem;
-  border-bottom: 2px solid #000000;
-  box-shadow: 2px 2px 0 #808080;
+/* ----------------------------- */
+/*  SEKCJA ODTWARZACZA (PRAWA)   */
+/* ----------------------------- */
+section#sounds {
+  background: #C0C0C0;
+  border: 2px solid #000080;
+  box-shadow: 4px 4px 0 #808080;
+  padding: 1.5rem;
+  position: relative;
+  text-align: center;
+  flex: 0 0 750px;
+  min-width: 750px;
+  max-width: 750px;
 }
 
-/* ukryj wewnętrzne h2 */
-section h2 {
-  display: none;
-}
+/* usuń belki tytułowe i nagłówki h2 */
+section::before { display: none!important; content: none!important; }
+section h2       { display: none!important; }
 
 /* PLAYER BLOCK */
 .player {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
   background: #C0C0C0;
   border: 2px solid #808080;
   box-shadow: 2px 2px 0 #808080;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-/* AVATAR */
+/* AVATAR – zawsze kwadrat */
 .player-avatar {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
+  background-color: #fff;
   background-size: cover;
   background-position: center;
   border: 2px solid #808080;
   margin-right: 1rem;
-  background-color: #FFFFFF;
   box-shadow: inset 1px 1px 0 #808080;
+  flex-shrink: 0;
 }
 
 /* NAME + SCORE */
@@ -103,10 +99,9 @@ section h2 {
   flex: 1;
   font-weight: bold;
   font-size: 1.2rem;
-  cursor: pointer;
   color: #000080;
+  cursor: pointer;
 }
-
 .player-points {
   margin: 0 0.5rem;
   font-size: 1.1rem;
@@ -115,12 +110,11 @@ section h2 {
 
 /* RETRO BUTTONS */
 button, .remove-button {
-  font-family: inherit;
-  font-size: 0.9rem;
+  font: 0.9rem inherit;
   background: #C0C0C0;
-  color: #000000;
-  border-top: 2px solid #FFFFFF;
-  border-left: 2px solid #FFFFFF;
+  color: #000;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #808080;
   border-right: 2px solid #808080;
   padding: 0.3rem 0.6rem;
@@ -132,88 +126,166 @@ button:active,
 .remove-button:active {
   border-top: 2px solid #808080;
   border-left: 2px solid #808080;
-  border-bottom: 2px solid #FFFFFF;
-  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
 }
 
-/* QUICK SOUND BUTTONS */
-#quick-buttons button {
-  font-family: inherit;
-  font-size: 0.9rem;
+/* ============================= */
+/*  KOŁA RATUNKOWE (przy graczu) */
+/* ============================= */
+.lifelines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+.lifeline {
+  width: 24px;
+  height: 24px;
   background: #C0C0C0;
-  color: #000000;
-  border-top: 2px solid #FFFFFF;
-  border-left: 2px solid #FFFFFF;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lifeline.checked {
+  background: #808080;
+  color: #fff;
+  border-color: #404040;
+}
+
+/* WSKAŹNIKI TUR I ODPOWIADAJĄCEGO */
+.indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: 0 0.5rem;
+  background: #fff;
+  border: 2px solid #808080;
+  opacity: 0.3;
+  vertical-align: middle;
+}
+.indicator.active         { opacity: 1; }
+.turn-indicator.active   { background: #00f; }
+.answer-indicator.active { background: #f00; }
+
+/* QUICK SOUND BUTTONS */
+#quick-buttons {
+  margin: 1rem 0;
+}
+#quick-buttons button {
+  font: 0.9rem inherit;
+  background: #C0C0C0;
+  color: #000;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #808080;
   border-right: 2px solid #808080;
   padding: 0.3rem 0.6rem;
-  margin: 0.3rem 0.4rem;
+  margin: 0 0.4rem;
 }
 #quick-buttons button:active {
   border-top: 2px solid #808080;
   border-left: 2px solid #808080;
-  border-bottom: 2px solid #FFFFFF;
-  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
 }
 
 /* SOUND TABLE */
 #sound-table {
-  width: 100%;
-  margin-bottom: 1rem;
   border-spacing: 4px;
+  table-layout: auto;
+  width: auto;
+  margin: 0 auto 1rem;
 }
-#sound-table td {
+#sound-table th {
+  padding: 4px 8px;
   text-align: center;
 }
-#sound-table button {
-  width: 100%;
-  font-family: inherit;
-  font-size: 0.9rem;
+#sound-table td {
+  padding: 4px;
+  text-align: center;
+}
+#sound-table td button {
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+  margin: 0 auto;
   background: #C0C0C0;
-  color: #000000;
-  border-top: 2px solid #FFFFFF;
-  border-left: 2px solid #FFFFFF;
+  color: #000;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #808080;
   border-right: 2px solid #808080;
-  padding: 0.3rem;
+  box-sizing: border-box;
 }
-#sound-table button:active {
+#sound-table td button:active {
   border-top: 2px solid #808080;
   border-left: 2px solid #808080;
-  border-bottom: 2px solid #FFFFFF;
-  border-right: 2px solid #FFFFFF;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
 }
-
-/* DEPRESSED LOOK FOR ACTIVE SOUND BUTTONS */
-#sound-table button.active-sound,
-#quick-buttons button.active-sound {
-  border-top: 2px solid #808080;
-  border-left: 2px solid #808080;
-  border-bottom: 2px solid #FFFFFF;
-  border-right: 2px solid #FFFFFF;
+#sound-table button.active-sound {
   background: #C0C0C0;
-  color: #000000;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
 }
 
-/* SELECT + AUDIO */
-select {
-  font-family: inherit;
-  font-size: 0.9rem;
-  background: #FFFFFF;
-  color: #000000;
-  border: 2px solid #808080;
-  padding: 0.3rem;
-  margin-top: 0.8rem;
+/* SELECT + PLAY BTN */
+select, #play-sound {
+  display: inline-block;
+  margin: 0.5rem 0.3rem;
 }
+
+/* AUDIO PLAYER */
 audio {
-  width: 100%;
-  margin-top: 0.8rem;
+  display: block;
+  width: 60%;
+  max-width: 500px;
+  margin: 0.5rem auto;
+}
+
+/* KOŁA RATUNKOWE (opis dolny) */
+.lifeline-description {
+  margin: 2rem auto 0;
+  /* centrowanie bloku */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lifeline-description p {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+/* lista jako inline-block, żeby zawęzić szerokość do zawartości */
+.lifeline-description ol {
+  display: inline-block;
+  text-align: left;
+  padding-left: 0;
+  list-style: none;
+}
+.lifeline-description li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.3rem 0;
+}
+.lifeline-description .lifeline-emoji {
+  flex: 0 0 1.5em;
+  display: inline-flex;
+  justify-content: center;
 }
 
 /* FOOTER */
 footer {
   background: #000080;
-  color: #FFFFFF;
+  color: #fff;
   text-align: center;
   padding: 0.5rem 0;
   font-size: 0.8rem;
@@ -221,51 +293,7 @@ footer {
   box-shadow: -2px -2px 0 #808080;
 }
 
-/* LIFELINES */
-.lifeline {
-  width: 24px;
-  height: 24px;
-  background: #C0C0C0;
-  border-top: 2px solid #FFFFFF;
-  border-left: 2px solid #FFFFFF;
-  border-bottom: 2px solid #808080;
-  border-right: 2px solid #808080;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.3rem;
-  cursor: pointer;
-}
-.lifeline.checked {
-  background: #808080;
-  color: #FFFFFF;
-  border-color: #404040;
-}
-
-/* INDICATORS (tura i odpowiadający) */
-.indicator {
-  width: 0.75rem;
-  height: 0.75rem;
-  margin-left: 0.5rem;
-  background: #FFFFFF;
-  border: 2px solid #808080;
-  opacity: 0.3;
-}
-.indicator.active {
-  opacity: 1;
-}
-.turn-indicator.active {
-  background: #0000FF;
-}
-.answer-indicator.active {
-  background: #FF0000;
-}
-
 /* AVATAR PICKER */
-.player-avatar {
-  position: relative; /* anchor dla absolutnego pickera */
-}
-
 .avatar-picker {
   position: absolute;
   top: 80px;
@@ -273,12 +301,11 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  background: #FFFFFF;
+  background: #fff;
   border: 2px inset #808080;
   padding: 5px;
   z-index: 1000;
 }
-
 .avatar-option {
   width: 50px;
   height: 50px;
@@ -287,7 +314,6 @@ footer {
   border: 2px solid #444;
   cursor: pointer;
 }
-
 .avatar-option:hover {
   border-color: #000080;
 }

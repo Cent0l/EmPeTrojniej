@@ -2,37 +2,50 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="language" content="pl" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EmPeTrójniej</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
   <header>EmPeTrójniej</header>
 
   <main>
-    <!-- Sekcja graczy -->
+    <!-- Sekcja Gracze -->
     <section id="players">
-      <h2>Gracze</h2>
       <div id="player-list"></div>
       <button id="add-player">Dodaj gracza</button>
       <button id="next-turn-btn">Następna tura</button>
       <button id="answer-btn">Odpowiada</button>
     </section>
 
-    <!-- Sekcja odtwarzacza dźwięków -->
+    <!-- Sekcja Odtwarzacz dźwięków -->
     <section id="sounds">
-      <h2>Odtwarzacz dźwięków</h2>
-      <table id="sound-table"></table>
+      <table id="sound-table">
+        <thead>
+          <tr>
+            <th>placeholder</th>
+            <th>placeholder</th>
+            <th>placeholder</th>
+            <th>placeholder</th>
+            <th>placeholder</th>
+            <th>Typ</th>
+          </tr>
+        </thead>
+      </table>
+
       <select id="sound-select"></select>
       <button id="play-sound">Odtwórz</button>
       <audio id="audio-player" controls></audio>
+
       <div id="quick-buttons">
         <button onclick="playFixedSound('sounds/correct.mp3')">Correct</button>
         <button onclick="playFixedSound('sounds/wrong.mp3')">Wrong</button>
         <button onclick="playFixedSound('sounds/yay.mp3')">Yay</button>
         <button onclick="playFixedSound('sounds/applause.mp3')">Brawa</button>
       </div>
+
       <div class="lifeline-description">
         <p><strong>KOŁA RATUNKOWE</strong></p>
         <ol>
@@ -47,10 +60,22 @@
   <footer>Teleturniej Toczkensa. Created by SiemkaMati</footer>
 
   <script>
-    // --- DOM ---
+    // --- RĘCZNE ETYKIETY DLA KOLUMN TYPÓW ---
+    const typeLabels = [
+      'indie',
+      'klasyka',
+      'fps',
+      'placeholder44',
+      'placeholder55',
+      'placeholder66',
+      'placeholder77',
+      'placeholder88'
+    ];
+
+    // --- ELEMENTY DOM ---
     const playerList    = document.getElementById("player-list");
-    const addBtn        = document.getElementById("add-player");
-    const nextBtn       = document.getElementById("next-turn-btn");
+    const addPlayerBtn  = document.getElementById("add-player");
+    const nextTurnBtn   = document.getElementById("next-turn-btn");
     const answerBtn     = document.getElementById("answer-btn");
     const soundTable    = document.getElementById("sound-table");
     const soundSelect   = document.getElementById("sound-select");
@@ -58,43 +83,48 @@
     const audioPlayer   = document.getElementById("audio-player");
 
     // --- STAN APLIKACJI ---
+    let players            = JSON.parse(localStorage.getItem("players"))      || [];
+    let avatars            = [];
+    let activeSounds       = JSON.parse(localStorage.getItem("activeSounds")) || [];
     let currentTurnIndex   = -1;
     let currentAnswerIndex = -1;
-    let players            = [];
-    let avatars            = [];
-    let activeSounds       = [];
 
-    // --- LOCALSTORAGE ---
-    function loadStorage() {
-      players      = JSON.parse(localStorage.getItem("players"))      || [];
-      activeSounds = JSON.parse(localStorage.getItem("activeSounds")) || [];
+    // --- POMOCNICZE: ZAPIS DO localStorage ---
+    function savePlayers() {
+      localStorage.setItem("players", JSON.stringify(players));
     }
-    function savePlayers()      { localStorage.setItem("players", JSON.stringify(players)); }
-    function saveActiveSounds() { localStorage.setItem("activeSounds", JSON.stringify(activeSounds)); }
+    function saveActiveSounds() {
+      localStorage.setItem("activeSounds", JSON.stringify(activeSounds));
+    }
 
-    // wczytaj stan od razu, by activeSounds było dostępne przy budowie UI
-    loadStorage();
-
-    // --- FETCH AVATARÓW ---
+    // --- ŁADUJ AVATAR.JSON ---
     fetch("avatars.json")
-      .then(r => r.json())
+      .then(res => res.json())
       .then(data => avatars = data)
       .catch(err => console.error("Błąd avatarów:", err));
 
-    // --- GENERUJ SOUND TABLE + SELECT ---
+    // --- ŁADUJ SOUNDS.JSON I BUDUJ TABELĘ + SELECT ---
     fetch("sounds.json")
-      .then(r => r.json())
+      .then(res => res.json())
       .then(files => {
-        // pogrupuj wg pierwszej cyfry w nazwie
+        // grupowanie wg pierwszej cyfry
         const groups = {};
         files.forEach(f => {
-          const g = f.match(/^(\d)/)?.[1] || '_';
-          (groups[g] = groups[g] || []).push(f);
+          const match = f.match(/^(\d)/);
+          const g = match ? match[1] : "_";
+          if (!groups[g]) groups[g] = [];
+          groups[g].push(f);
         });
-        const maxRows = Math.max(...Object.values(groups).map(a => a.length));
+        const sortedGroups = Object.keys(groups).sort();
+        const maxRows = Math.max(...sortedGroups.map(g => groups[g].length));
+
+        // twórz <tbody>
+        const tbody = document.createElement("tbody");
         for (let row = 0; row < maxRows; row++) {
           const tr = document.createElement("tr");
-          Object.keys(groups).sort().forEach(g => {
+
+          // kolumny dźwięków
+          sortedGroups.forEach(g => {
             const td = document.createElement("td");
             const fname = groups[g][row];
             if (fname) {
@@ -104,15 +134,23 @@
                 .replace(/^\d+_/, "")
                 .replace(/_/g, " ")
                 .replace(".mp3", "");
-              btn.onclick = () => playQuickSound(path, btn);
+              btn.onclick = () => toggleQuickSound(path, btn);
               if (activeSounds.includes(path)) btn.classList.add("active-sound");
               td.appendChild(btn);
             }
             tr.appendChild(td);
           });
-          soundTable.appendChild(tr);
+
+          // kolumna Typ
+          const typeTd = document.createElement("td");
+          typeTd.textContent = typeLabels[row] || "";
+          tr.appendChild(typeTd);
+
+          tbody.appendChild(tr);
         }
-        // wypełnij select
+        soundTable.appendChild(tbody);
+
+        // uzupełnij select
         files.forEach(f => {
           const opt = document.createElement("option");
           opt.value = `sounds/${f}`;
@@ -122,8 +160,8 @@
       })
       .catch(err => console.error("Błąd przy ładowaniu dźwięków:", err));
 
-    // --- AKCJE DŹWIĘKOWE ---
-    function playQuickSound(path, btn) {
+    // --- FUNKCJE DŹWIĘKOWE ---
+    function toggleQuickSound(path, btn) {
       const idx = activeSounds.indexOf(path);
       if (idx > -1) {
         audioPlayer.pause();
@@ -147,36 +185,30 @@
       audioPlayer.play();
     });
 
-    // --- WSKAŹNIKI TUR I ODPOWIADAJĄCEGO ---
+    // --- WSKAŹNIKI TUR & ODPOWIADAJĄCEGO ---
     function updateIndicators() {
-      const items = playerList.querySelectorAll('.player');
-      items.forEach((el, i) => {
-        el.querySelector('.turn-indicator')
-          .classList.toggle('active', i === currentTurnIndex);
-        el.querySelector('.answer-indicator')
-          .classList.toggle('active', i === currentAnswerIndex);
+      document.querySelectorAll(".player").forEach((el, i) => {
+        el.querySelector(".turn-indicator")
+          .classList.toggle("active", i === currentTurnIndex);
+        el.querySelector(".answer-indicator")
+          .classList.toggle("active", i === currentAnswerIndex);
       });
     }
-
     function handleNext() {
-      const count = players.length;
-      if (!count) return;
-      currentTurnIndex = (currentTurnIndex + 1) % count;
+      if (!players.length) return;
+      currentTurnIndex = (currentTurnIndex + 1) % players.length;
       currentAnswerIndex = currentTurnIndex;
       updateIndicators();
     }
-
     function handleAnswer() {
-      const count = players.length;
-      if (!count) return;
-      currentAnswerIndex = (currentAnswerIndex + 1) % count;
+      if (!players.length) return;
+      currentAnswerIndex = (currentAnswerIndex + 1) % players.length;
       updateIndicators();
     }
-
-    nextBtn.addEventListener("click", handleNext);
+    nextTurnBtn.addEventListener("click", handleNext);
     answerBtn.addEventListener("click", handleAnswer);
 
-    // --- DODAWANIE, RENDER, EDYCJA GRACZA ---
+    // --- CRUD GRACZY ---
     function addPlayer() {
       const id = `player-${Date.now()}`;
       const avatar = avatars.length ? avatars[players.length % avatars.length] : null;
@@ -186,7 +218,7 @@
       savePlayers();
       updateIndicators();
     }
-    addBtn.addEventListener("click", addPlayer);
+    addPlayerBtn.addEventListener("click", addPlayer);
 
     function renderPlayer(p) {
       const div = document.createElement("div");
@@ -194,7 +226,8 @@
       div.id = p.id;
 
       const del = document.createElement("button");
-      del.textContent = "X"; del.className = "remove-button";
+      del.textContent = "X";
+      del.className = "remove-button";
       del.onclick = () => removePlayer(p.id);
 
       const av = document.createElement("div");
@@ -203,8 +236,9 @@
       av.onclick = () => showAvatarPicker(p, av);
 
       const nm = document.createElement("span");
-      nm.className = "player-name"; nm.textContent = p.name;
-      nm.onclick = () => editName(p.id);
+      nm.className = "player-name";
+      nm.textContent = p.name;
+      nm.onclick = () => editPlayerName(p.id);
 
       const turnDot = document.createElement("span");
       turnDot.className = "indicator turn-indicator";
@@ -215,18 +249,21 @@
       ansDot.title = "Kto odpowiada";
 
       const minus = document.createElement("button");
-      minus.textContent = "-"; minus.onclick = () => changeScore(p.id, -1);
+      minus.textContent = "-";
+      minus.onclick = () => changeScore(p.id, -1);
 
       const pts = document.createElement("span");
-      pts.className = "player-points"; pts.id = `points-${p.id}`;
+      pts.className = "player-points";
+      pts.id = `points-${p.id}`;
       pts.textContent = p.points;
 
       const plus = document.createElement("button");
-      plus.textContent = "+"; plus.onclick = () => changeScore(p.id, 1);
+      plus.textContent = "+";
+      plus.onclick = () => changeScore(p.id, 1);
 
       const lfdiv = document.createElement("div");
       lfdiv.className = "lifelines";
-      ["#️⃣","📅","🎮"].forEach((icon,i) => {
+      ["#️⃣","📅","🎮"].forEach((icon, i) => {
         const lf = document.createElement("div");
         lf.className = "lifeline";
         lf.dataset.index = i;
@@ -247,18 +284,27 @@
       playerList.appendChild(div);
     }
 
-    function removePlayer(id) {
-      players = players.filter(p => p.id !== id);
-      document.getElementById(id).remove();
-      savePlayers();
-      updateIndicators();
-    }
+    function removePlayer(playerId) {
+    const player = players.find(p => p.id === playerId);
+    // pokazujemy dialog potwierdzenia z imieniem gracza
+    const msg = player
+      ? `Czy na pewno chcesz usunąć gracza „${player.name}”?`
+      : "Czy na pewno chcesz usunąć tego gracza?";
+    if (!confirm(msg)) return;   // jeśli kliknie „Anuluj”, przerywamy
 
-    function editName(id) {
+    // inaczej usuwamy
+    players = players.filter(p => p.id !== playerId);
+    document.getElementById(playerId).remove();
+    savePlayers();
+  }
+
+    function editPlayerName(id) {
       const p = players.find(x => x.id === id);
       const span = document.querySelector(`#${id} .player-name`);
       const inp = document.createElement("input");
-      inp.type = "text"; inp.value = p.name; inp.className = "player-name-input";
+      inp.type = "text";
+      inp.value = p.name;
+      inp.className = "player-name-input";
       inp.onblur = () => {
         p.name = inp.value.trim() || p.name;
         span.textContent = p.name;
@@ -308,7 +354,6 @@
 
     // --- INIT ---
     window.addEventListener("DOMContentLoaded", () => {
-      loadStorage();
       players.forEach(renderPlayer);
       updateIndicators();
     });
