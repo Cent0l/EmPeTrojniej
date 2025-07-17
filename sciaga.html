@@ -8,8 +8,19 @@
   <style>
     main { max-width: 2000px; margin: 2rem auto; }
     h1 { text-align: center; color: #000080; margin-bottom: 1rem; }
-    table.cheat { width: 100%; border-collapse: collapse; }
-    table.cheat th, table.cheat td {
+
+    table.cheat {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    /* kolumna checkboxów */
+    table.cheat th:first-child,
+    table.cheat td:first-child {
+      width: 3rem;
+      text-align: center;
+    }
+    table.cheat th,
+    table.cheat td {
       border: 2px solid #808080;
       padding: 0.5rem;
       text-align: left;
@@ -32,6 +43,7 @@
     <table class="cheat">
       <thead>
         <tr>
+          <th>Zrobione</th>
           <th>Plik</th>
           <th>Gra</th>
           <th>Rok wydania</th>
@@ -42,87 +54,102 @@
       </thead>
       <tbody>
         <!-- Kategoria 1 -->
-        <tr><td>1.1</td><td>Lorem ipsum</td><td>2001</td><td>ipsum, dolor</td><td>PC</td><td>Lorem ipsum dolor sit amet.</td></tr>
-        <tr><td>1.2</td><td>Dolor sit</td><td>2002</td><td>sit, amet</td><td>PS2</td><td>Consectetur adipiscing elit.</td></tr>
-        <tr><td>1.3</td><td>Amet con</td><td>2003</td><td>amet, consectetur</td><td>Xbox</td><td>Praesent vel ligula scelerisque.</td></tr>
-        <tr><td>1.4</td><td>Consectetur</td><td>2004</td><td>consectetur, elit</td><td>Switch</td><td>Fusce vitae tortor nec risus.</td></tr>
-        <tr><td>1.5</td><td>Adipiscing</td><td>2005</td><td>adipiscing, sed</td><td>PC</td><td>Vestibulum ante ipsum primis.</td></tr>
-        <tr><td>1.6</td><td>Sed do</td><td>2006</td><td>sed, do</td><td>PS3</td><td>Ut convallis dolor quis.</td></tr>
-        <tr><td>1.7</td><td>Eiusmod</td><td>2007</td><td>eiusmod, tempor</td><td>Xbox 360</td><td>Nulla facilisi. Cras.</td></tr>
-        <tr><td>1.8</td><td>Tempor</td><td>2008</td><td>tempor, incididunt</td><td>PC</td><td>Integer lacinia sollicitudin.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.1"></td><td>1.1</td><td>Lorem ipsum</td><td>2001</td><td>ipsum, dolor</td><td>PC</td><td>Lorem ipsum dolor sit amet.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.2"></td><td>1.2</td><td>Dolor sit</td><td>2002</td><td>sit, amet</td><td>PS2</td><td>Consectetur adipiscing elit.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.3"></td><td>1.3</td><td>Amet con</td><td>2003</td><td>amet, consectetur</td><td>Xbox</td><td>Praesent vel ligula scelerisque.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.4"></td><td>1.4</td><td>Consectetur</td><td>2004</td><td>consectetur, elit</td><td>Switch</td><td>Fusce vitae tortor nec risus.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.5"></td><td>1.5</td><td>Adipiscing</td><td>2005</td><td>adipiscing, sed</td><td>PC</td><td>Vestibulum ante ipsum primis.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.6"></td><td>1.6</td><td>Sed do</td><td>2006</td><td>sed, do</td><td>PS3</td><td>Ut convallis dolor quis.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.7"></td><td>1.7</td><td>Eiusmod</td><td>2007</td><td>eiusmod, tempor</td><td>Xbox 360</td><td>Nulla facilisi. Cras.</td></tr>
+        <tr><td><input type="checkbox" data-file="1.8"></td><td>1.8</td><td>Tempor</td><td>2008</td><td>tempor, incididunt</td><td>PC</td><td>Integer lacinia sollicitudin.</td></tr>
 
         <!-- Kategoria 2 -->
-        <tr><td>2.1</td><td>Lorem ipsum</td><td>2009</td><td>ut, labore</td><td>PS4</td><td>Phasellus non ante.</td></tr>
-        <tr><td>2.2</td><td>Labore et</td><td>2010</td><td>labore, et</td><td>Xbox One</td><td>Praesent aliquet magna.</td></tr>
-        <tr><td>2.3</td><td>Dolore magna</td><td>2011</td><td>dolore, magna</td><td>Switch</td><td>Quisque vulputate lectus.</td></tr>
-        <tr><td>2.4</td><td>Aliqua ut</td><td>2012</td><td>aliqua, ut</td><td>PC</td><td>Nunc euismod lacus.</td></tr>
-        <tr><td>2.5</td><td>Enim ad</td><td>2013</td><td>enim, ad</td><td>PS5</td><td>Vivamus convallis dui.</td></tr>
-        <tr><td>2.6</td><td>Minim veniam</td><td>2014</td><td>minim, veniam</td><td>PC</td><td>Ut sed lectus nec.</td></tr>
-        <tr><td>2.7</td><td>Quis nostrud</td><td>2015</td><td>quis, nostrud</td><td>Xbox Series X</td><td>Morbi sit amet magna.</td></tr>
-        <tr><td>2.8</td><td>Exercitation</td><td>2016</td><td>exercitation, ullamco</td><td>PS4</td><td>Nulla tempus nec quam.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.1"></td><td>2.1</td><td>Lorem ipsum</td><td>2009</td><td>ut, labore</td><td>PS4</td><td>Phasellus non ante.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.2"></td><td>2.2</td><td>Labore et</td><td>2010</td><td>labore, et</td><td>Xbox One</td><td>Praesent aliquet magna.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.3"></td><td>2.3</td><td>Dolore magna</td><td>2011</td><td>dolore, magna</td><td>Switch</td><td>Quisque vulputate lectus.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.4"></td><td>2.4</td><td>Aliqua ut</td><td>2012</td><td>aliqua, ut</td><td>PC</td><td>Nunc euismod lacus.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.5"></td><td>2.5</td><td>Enim ad</td><td>2013</td><td>enim, ad</td><td>PS5</td><td>Vivamus convallis dui.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.6"></td><td>2.6</td><td>Minim veniam</td><td>2014</td><td>minim, veniam</td><td>PC</td><td>Ut sed lectus nec.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.7"></td><td>2.7</td><td>Quis nostrud</td><td>2015</td><td>quis, nostrud</td><td>Xbox Series X</td><td>Morbi sit amet magna.</td></tr>
+        <tr><td><input type="checkbox" data-file="2.8"></td><td>2.8</td><td>Exercitation</td><td>2016</td><td>exercitation, ullamco</td><td>PS4</td><td>Nulla tempus nec quam.</td></tr>
 
         <!-- Kategoria 3 -->
-        <tr><td>3.1</td><td>Lorem ipsum</td><td>2017</td><td>laboris, nisi</td><td>Switch</td><td>Aenean nec eros.</td></tr>
-        <tr><td>3.2</td><td>Nisi ut</td><td>2018</td><td>nisi, ut</td><td>PC</td><td>Fusce dapibus tellus.</td></tr>
-        <tr><td>3.3</td><td>Aliquip ex</td><td>2019</td><td>aliquip, ex</td><td>PS5</td><td>Vivamus convallis eros.</td></tr>
-        <tr><td>3.4</td><td>Ea commodo</td><td>2020</td><td>ea, commodo</td><td>Xbox One</td><td>Aenean vel turpis.</td></tr>
-        <tr><td>3.5</td><td>Consequat</td><td>2021</td><td>consequat, duis</td><td>PC</td><td>Curabitur non nulla.</td></tr>
-        <tr><td>3.6</td><td>Duis aute</td><td>2022</td><td>duis, aute</td><td>Switch</td><td>Pellentesque in ipsum.</td></tr>
-        <tr><td>3.7</td><td>Irum dolor</td><td>2023</td><td>irure, dolor</td><td>PS4</td><td>Sed porttitor lectus.</td></tr>
-        <tr><td>3.8</td><td>In reprehenderit</td><td>2024</td><td>in, reprehenderit</td><td>PC</td><td>Etiam sit amet orci.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.1"></td><td>3.1</td><td>Lorem ipsum</td><td>2017</td><td>laboris, nisi</td><td>Switch</td><td>Aenean nec eros.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.2"></td><td>3.2</td><td>Nisi ut</td><td>2018</td><td>nisi, ut</td><td>PC</td><td>Fusce dapibus tellus.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.3"></td><td>3.3</td><td>Aliquip ex</td><td>2019</td><td>aliquip, ex</td><td>PS5</td><td>Vivamus convallis eros.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.4"></td><td>3.4</td><td>Ea commodo</td><td>2020</td><td>ea, commodo</td><td>Xbox One</td><td>Aenean vel turpis.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.5"></td><td>3.5</td><td>Consequat</td><td>2021</td><td>consequat, duis</td><td>PC</td><td>Curabitur non nulla.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.6"></td><td>3.6</td><td>Duis aute</td><td>2022</td><td>duis, aute</td><td>Switch</td><td>Pellentesque in ipsum.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.7"></td><td>3.7</td><td>Irum dolor</td><td>2023</td><td>irure, dolor</td><td>PS4</td><td>Sed porttitor lectus.</td></tr>
+        <tr><td><input type="checkbox" data-file="3.8"></td><td>3.8</td><td>In reprehenderit</td><td>2024</td><td>in, reprehenderit</td><td>PC</td><td>Etiam sit amet orci.</td></tr>
 
         <!-- Kategoria 4 -->
-        <tr><td>4.1</td><td>Lorem ipsum</td><td>2025</td><td>voluptate, velit</td><td>Xbox Series X</td><td>Vivamus suscipit tortor.</td></tr>
-        <tr><td>4.2</td><td>Velit esse</td><td>2026</td><td>velit, esse</td><td>PS3</td><td>Donec sollicitudin mi.</td></tr>
-        <tr><td>4.3</td><td>Cillum dolore</td><td>2027</td><td>cillum, dolore</td><td>Switch</td><td>Proin eget tortor risus.</td></tr>
-        <tr><td>4.4</td><td>Eu fugiat</td><td>2028</td><td>eu, fugiat</td><td>PC</td><td>Curabitur aliquet quam.</td></tr>
-        <tr><td>4.5</td><td>Nulla pariatur</td><td>2029</td><td>nulla, pariatur</td><td>Xbox</td><td>Praesent sapien massa.</td></tr>
-        <tr><td>4.6</td><td>Excepteur sint</td><td>2030</td><td>excepteur, sint</td><td>PS2</td><td>Vestibulum ac diam.</td></tr>
-        <tr><td>4.7</td><td>Occaecat cupidatat</td><td>2031</td><td>occaecat, cupidatat</td><td>PS4</td><td>Mauris blandit aliquet.</td></tr>
-        <tr><td>4.8</td><td>Non proident</td><td>2032</td><td>non, proident</td><td>PC</td><td>Duis mollis, est non.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.1"></td><td>4.1</td><td>Lorem ipsum</td><td>2025</td><td>voluptate, velit</td><td>Xbox Series X</td><td>Vivamus suscipit tortor.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.2"></td><td>4.2</td><td>Velit esse</td><td>2026</td><td>velit, esse</td><td>PS3</td><td>Donec sollicitudin mi.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.3"></td><td>4.3</td><td>Cillum dolore</td><td>2027</td><td>cillum, dolore</td><td>Switch</td><td>Proin eget tortor risus.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.4"></td><td>4.4</td><td>Eu fugiat</td><td>2028</td><td>eu, fugiat</td><td>PC</td><td>Curabitur aliquet quam.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.5"></td><td>4.5</td><td>Nulla pariatur</td><td>2029</td><td>nulla, pariatur</td><td>Xbox</td><td>Praesent sapien massa.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.6"></td><td>4.6</td><td>Excepteur sint</td><td>2030</td><td>excepteur, sint</td><td>PS2</td><td>Vestibulum ac diam.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.7"></td><td>4.7</td><td>Occaecat cupidatat</td><td>2031</td><td>occaecat, cupidatat</td><td>PS4</td><td>Mauris blandit aliquet.</td></tr>
+        <tr><td><input type="checkbox" data-file="4.8"></td><td>4.8</td><td>Non proident</td><td>2032</td><td>non, proident</td><td>PC</td><td>Duis mollis, est non.</td></tr>
 
         <!-- Kategoria 5 -->
-        <tr><td>5.1</td><td>Lorem ipsum</td><td>2033</td><td>sunt, in</td><td>Switch</td><td>Donec rutrum congue leo.</td></tr>
-        <tr><td>5.2</td><td>Hamburger</td><td>2034</td><td>hamburger, dolor</td><td>PS5</td><td>Vivamus magna justo.</td></tr>
-        <tr><td>5.3</td><td>Pizza</td><td>2035</td><td>pizza, ipsum</td><td>PC</td><td>Quisque velit nisi.</td></tr>
-        <tr><td>5.4</td><td>Tacos</td><td>2036</td><td>tacos, amet</td><td>Xbox One</td><td>Curabitur aliquet quam.</td></tr>
-        <tr><td>5.5</td><td>Burrito</td><td>2037</td><td>burrito, consectetur</td><td>Switch</td><td>Cras ultricies ligula.</td></tr>
-        <tr><td>5.6</td><td>Salad</td><td>2038</td><td>salad, elit</td><td>PC</td><td>Pellentesque in ipsum.</td></tr>
-        <tr><td>5.7</td><td>Sushi</td><td>2039</td><td>sushi, sed</td><td>PS4</td><td>Vivamus magna justo.</td></tr>
-        <tr><td>5.8</td><td>Coffee</td><td>2040</td><td>coffee, do</td><td>PS3</td><td>Donec sollicitudin mi.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.1"></td><td>5.1</td><td>Lorem ipsum</td><td>2033</td><td>sunt, in</td><td>Switch</td><td>Donec rutrum congue leo.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.2"></td><td>5.2</td><td>Hamburger</td><td>2034</td><td>hamburger, dolor</td><td>PS5</td><td>Vivamus magna justo.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.3"></td><td>5.3</td><td>Pizza</td><td>2035</td><td>pizza, ipsum</td><td>PC</td><td>Quisque velit nisi.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.4"></td><td>5.4</td><td>Tacos</td><td>2036</td><td>tacos, amet</td><td>Xbox One</td><td>Curabitur aliquet quam.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.5"></td><td>5.5</td><td>Burrito</td><td>2037</td><td>burrito, consectetur</td><td>Switch</td><td>Cras ultricies ligula.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.6"></td><td>5.6</td><td>Salad</td><td>2038</td><td>salad, elit</td><td>PC</td><td>Pellentesque in ipsum.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.7"></td><td>5.7</td><td>Sushi</td><td>2039</td><td>sushi, sed</td><td>PS4</td><td>Vivamus magna justo.</td></tr>
+        <tr><td><input type="checkbox" data-file="5.8"></td><td>5.8</td><td>Coffee</td><td>2040</td><td>coffee, do</td><td>PS3</td><td>Donec sollicitudin mi.</td></tr>
 
         <!-- Kategoria 6 -->
-        <tr><td>6.1</td><td>Lorem ipsum</td><td>2041</td><td>sit, amet</td><td>Switch</td><td>Curabitur non nulla.</td></tr>
-        <tr><td>6.2</td><td>Dolor sit</td><td>2042</td><td>dolor, sit</td><td>PC</td><td>Proin eget tortor risus.</td></tr>
-        <tr><td>6.3</td><td>Amet con</td><td>2043</td><td>amet, con</td><td>Xbox</td><td>Praesent sapien massa.</td></tr>
-        <tr><td>6.4</td><td>Consectetur</td><td>2044</td><td>consectetur, adipiscing</td><td>PS5</td><td>Nulla quis lorem ut.</td></tr>
-        <tr><td>6.5</td><td>Adipiscing</td><td>2045</td><td>adipiscing, elit</td><td>PC</td><td>Vestibulum ante ipsum.</td></tr>
-        <tr><td>6.6</td><td>Sed do</td><td>2046</td><td>sed, do</td><td>Switch</td><td>Mauris blandit aliquet.</td></tr>
-        <tr><td>6.7</td><td>Eiusmod</td><td>2047</td><td>eiusmod, tempor</td><td>Xbox One</td><td>Nulla porttitor accumsan.</td></tr>
-        <tr><td>6.8</td><td>Tempor</td><td>2048</td><td>tempor, incididunt</td><td>PS4</td><td>Cras ultricies ligula sed.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.1"></td><td>6.1</td><td>Lorem ipsum</td><td>2041</td><td>sit, amet</td><td>Switch</td><td>Curabitur non nulla.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.2"></td><td>6.2</td><td>Dolor sit</td><td>2042</td><td>dolor, sit</td><td>PC</td><td>Proin eget tortor risus.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.3"></td><td>6.3</td><td>Amet con</td><td>2043</td><td>amet, con</td><td>Xbox</td><td>Praesent sapien massa.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.4"></td><td>6.4</td><td>Consectetur</td><td>2044</td><td>consectetur, adipiscing</td><td>PS5</td><td>Nulla quis lorem ut.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.5"></td><td>6.5</td><td>Adipiscing</td><td>2045</td><td>adipiscing, elit</td><td>PC</td><td>Vestibulum ante ipsum.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.6"></td><td>6.6</td><td>Sed do</td><td>2046</td><td>sed, do</td><td>Switch</td><td>Mauris blandit aliquet.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.7"></td><td>6.7</td><td>Eiusmod</td><td>2047</td><td>eiusmod, tempor</td><td>Xbox One</td><td>Nulla porttitor accumsan.</td></tr>
+        <tr><td><input type="checkbox" data-file="6.8"></td><td>6.8</td><td>Tempor</td><td>2048</td><td>tempor, incididunt</td><td>PS4</td><td>Cras ultricies ligula sed.</td></tr>
 
         <!-- Kategoria 7 -->
-        <tr><td>7.1</td><td>Lorem ipsum</td><td>2049</td><td>labore, et</td><td>PC</td><td>Vivamus magna justo.</td></tr>
-        <tr><td>7.2</td><td>Labore et</td><td>2050</td><td>labore, et</td><td>Switch</td><td>Quisque velit nisi.</td></tr>
-        <tr><td>7.3</td><td>Dolore magna</td><td>2051</td><td>dolore, magna</td><td>Xbox</td><td>Donec rutrum congue.</td></tr>
-        <tr><td>7.4</td><td>Aliqua ut</td><td>2052</td><td>aliqua, ut</td><td>PS5</td><td>Vestibulum ac diam sit.</td></tr>
-        <tr><td>7.5</td><td>Enim ad</td><td>2053</td><td>enim, ad</td><td>PC</td><td>Proin eget tortor risus.</td></tr>
-        <tr><td>7.6</td><td>Minim veniam</td><td>2054</td><td>minim, veniam</td><td>Switch</td><td>Praesent sapien massa.</td></tr>
-        <tr><td>7.7</td><td>Quis nostrud</td><td>2055</td><td>quis, nostrud</td><td>PS4</td><td>Nulla porttitor accumsan non.</td></tr>
-        <tr><td>7.8</td><td>Exercitation</td><td>2056</td><td>exercitation, ullamco</td><td>Xbox One</td><td>Cras ultricies ligula sed.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.1"></td><td>7.1</td><td>Lorem ipsum</td><td>2049</td><td>labore, et</td><td>PC</td><td>Vivamus magna justo.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.2"></td><td>7.2</td><td>Labore et</td><td>2050</td><td>labore, et</td><td>Switch</td><td>Quisque velit nisi.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.3"></td><td>7.3</td><td>Dolore magna</td><td>2051</td><td>dolore, magna</td><td>Xbox</td><td>Donec rutrum congue.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.4"></td><td>7.4</td><td>Aliqua ut</td><td>2052</td><td>aliqua, ut</td><td>PS5</td><td>Vestibulum ac diam sit.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.5"></td><td>7.5</td><td>Enim ad</td><td>2053</td><td>enim, ad</td><td>PC</td><td>Proin eget tortor risus.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.6"></td><td>7.6</td><td>Minim veniam</td><td>2054</td><td>minim, veniam</td><td>Switch</td><td>Praesent sapien massa.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.7"></td><td>7.7</td><td>Quis nostrud</td><td>2055</td><td>quis, nostrud</td><td>PS4</td><td>Nulla porttitor accumsan non.</td></tr>
+        <tr><td><input type="checkbox" data-file="7.8"></td><td>7.8</td><td>Exercitation</td><td>2056</td><td>exercitation, ullamco</td><td>Xbox One</td><td>Cras ultricies ligula sed.</td></tr>
 
         <!-- Kategoria 8 -->
-        <tr><td>8.1</td><td>Lorem ipsum</td><td>2057</td><td>aliquip, ex</td><td>PC</td><td>Vestibulum ante ipsum primis.</td></tr>
-        <tr><td>8.2</td><td>Aliquip ex</td><td>2058</td><td>aliquip, ex</td><td>Switch</td><td>Ut convallis dolor quis.</td></tr>
-        <tr><td>8.3</td><td>Ex ea</td><td>2059</td><td>ex, ea</td><td>Xbox</td><td>Nulla facilisi cras.</td></tr>
-        <tr><td>8.4</td><td>Comm</td><td>2060</td><td>commodo, consequat</td><td>PS5</td><td>Integer lacinia sollicitudin.</td></tr>
-        <tr><td>8.5</td><td>Consequat</td><td>2061</td><td>consequat, duis</td><td>PC</td><td>Vivamus suscipit tortor eget.</td></tr>
-        <tr><td>8.6</td><td>Duis aute</td><td>2062</td><td>duis, aute</td><td>Switch</td><td>Praesent aliquet magna at.</td></tr>
-        <tr><td>8.7</td><td>Irum dolor</td><td>2063</td><td>irum, dolor</td><td>Xbox One</td><td>Curabitur aliquet quam id.</td></tr>
-        <tr><td>8.8</td><td>In reprehenderit</td><td>2064</td><td>in, reprehenderit</td><td>PS4</td><td>Sed porttitor lectus nibh.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.1"></td><td>8.1</td><td>Lorem ipsum</td><td>2057</td><td>aliquip, ex</td><td>PC</td><td>Vestibulum ante ipsum primis.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.2"></td><td>8.2</td><td>Aliquip ex</td><td>2058</td><td>aliquip, ex</td><td>Switch</td><td>Ut convallis dolor quis.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.3"></td><td>8.3</td><td>Ex ea</td><td>2059</td><td>ex, ea</td><td>Xbox</td><td>Nulla facilisi cras.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.4"></td><td>8.4</td><td>Comm</td><td>2060</td><td>commodo, consequat</td><td>PS5</td><td>Integer lacinia sollicitudin.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.5"></td><td>8.5</td><td>Consequat</td><td>2061</td><td>consequat, duis</td><td>PC</td><td>Vivamus suscipit tortor eget.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.6"></td><td>8.6</td><td>Duis aute</td><td>2062</td><td>duis, aute</td><td>Switch</td><td>Praesent aliquet magna at.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.7"></td><td>8.7</td><td>Irum dolor</td><td>2063</td><td>irum, dolor</td><td>Xbox One</td><td>Curabitur aliquet quam id.</td></tr>
+        <tr><td><input type="checkbox" data-file="8.8"></td><td>8.8</td><td>In reprehenderit</td><td>2064</td><td>in, reprehenderit</td><td>PS4</td><td>Sed porttitor lectus nibh.</td></tr>
       </tbody>
     </table>
   </main>
   <footer>Teleturniej Toczkensa. Created by SiemkaMati</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_KEY = 'sciagaChecked';
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      document.querySelectorAll('input[type="checkbox"][data-file]').forEach(cb => {
+        const file = cb.dataset.file;
+        cb.checked = !!saved[file];
+        cb.addEventListener('change', () => {
+          saved[file] = cb.checked;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+        });
+      });
+    });
+  </script>
 </body>
 </html>
